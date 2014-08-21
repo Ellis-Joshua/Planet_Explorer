@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.graphics.Rect;
+import com.example.gameframework.Game;
 
 public class ClickableUI extends ClickableObject {
 	Bitmap buttonImage;
@@ -91,7 +91,7 @@ public class ClickableUI extends ClickableObject {
 		draw_UI.drawBitmap(bitmap, toDraw.getScr(), toDraw.getDst(), null);
 	}
 	public void onClick(RenderableObject player, Point touch, int speed) {
-		// TODO Auto-generated method stub
+		
 		if (button_up.isClicked(touch)){
 			player.move(0,-speed);
 		}else if (button_down.isClicked(touch)){

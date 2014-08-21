@@ -7,7 +7,7 @@ public class ClickableObject extends RenderableObject{
 	public static final int RECTANGLE = 0;
 	public static final int CIRCLE = 1;
 	
-	//The shape of thsi button
+	//The shape of this button
 	int shape;
 	
 	public ClickableObject(Point frameDom, Point displaySize, Point drawAt, int frames, int framesPerSecond, int shape) {

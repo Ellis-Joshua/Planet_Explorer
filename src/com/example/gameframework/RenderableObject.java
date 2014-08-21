@@ -28,7 +28,7 @@ public class RenderableObject {
 		//set up images sizes for bother the source and destination
 		frameCount = frames;
 		this.sourceSize.set (frameDom.x,frameDom.y);
-		this.displaySize.set(displaySize.x/2,displaySize.y/2);
+		this.displaySize.set(displaySize.x,displaySize.y);
 		
 		//set up remaining class variables. 
 		this.framesPerSecond=framesPerSecond;
@@ -90,7 +90,7 @@ public class RenderableObject {
 	//move the location that the image is being drawn
 	public void moveTo(Point center){
 		this.center.set( center.x, center.y);
-		destination.set(center.x - displaySize.x, center.y - displaySize.y, center.x+ displaySize.x, center.y +displaySize.y);
+		destination.set(center.x - displaySize.x/2, center.y - displaySize.y/2, center.x+ displaySize.x/2, center.y +displaySize.y/2);
 	}
 	
 	//move the location that the image is being drawn
@@ -122,13 +122,13 @@ public class RenderableObject {
 		center.x += amount.x;
 		center.y += amount.y;
 		
-		destination.set(center.x - displaySize.x, center.y - displaySize.y, center.x+ displaySize.x, center.y +displaySize.y);
+		destination.set(center.x - displaySize.x/2, center.y - displaySize.y/2, center.x+ displaySize.x/2, center.y +displaySize.y/2);
 	}
 	public void move(int mx, int my){
 		center.x += mx;
 		center.y += my;
 		
-		destination.set(center.x - displaySize.x, center.y - displaySize.y, center.x+ displaySize.x, center.y +displaySize.y);
+		destination.set(center.x - displaySize.x/2, center.y - displaySize.y/2, center.x+ displaySize.x/2, center.y +displaySize.y/2);
 	}
 }
 

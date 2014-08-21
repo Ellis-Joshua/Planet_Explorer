@@ -51,15 +51,15 @@ public class Game implements Runnable {
 		loadImage("player.gif",context);//load the players image into memory
 		actor=bitmapLoader;// save the players image
 		Point frameDom = new Point(32,32);//set the dominations of each animation frame 
-		Point displaySize = new Point(100,100);//set the dominations of the player to be drawn
+		Point displaySize = new Point(64,64);//set the dominations of the player to be drawn
 		Point startAt = new Point(50,50);//set the location the player is to be drawn
 		player= new RenderableObject (frameDom,displaySize, startAt, 3,3);// creat the player object
 		player.setPlay(RenderableObject.FORWARD);// set the player to be animated forwards
 		
 		//setup the UI
 		
-		Point UI_size= new Point(584,584);//(292,292);////()
-		Point UI_at=new Point(340,396);//(340,542);
+		Point UI_size= new Point(292,292);//(584,584);//////()
+		Point UI_at=new Point(170,250);//(340,542);
 		UI=new ClickableUI(UI_size,UI_at, ClickableUI.RECTANGLE);//(Point displaySize, Point drawAt, int shape){
 		UI.setup_ui(this, context);
 	}
@@ -94,8 +94,8 @@ public class Game implements Runnable {
 				touchInput.resetNewTouch();
 				Point touch = touchInput.getTouch();
 				if (UI.isClicked(touch)){
-					touch.x=touch.x-(UI.center.x-(UI.displaySize.x));
-					touch.y=touch.y-(UI.center.y-(UI.displaySize.y));
+					touch.x=touch.x-(UI.center.x-(UI.displaySize.x/2));
+					touch.y=touch.y-(UI.center.y-(UI.displaySize.y/2));
 					UI.onClick(player,touch,20);
 				}
 				
