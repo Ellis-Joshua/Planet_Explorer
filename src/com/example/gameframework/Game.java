@@ -91,14 +91,14 @@ public class Game implements Runnable {
 			
 			// "game" mechanics/*
 			if (touchInput.isNewTouch()){
-				touchInput.resetNewTouch();
 				Point touch = touchInput.getTouch();
+				UI.reset_button_click_state();
 				if (UI.isClicked(touch)){
 					touch.x=touch.x-(UI.center.x-(UI.displaySize.x/2));
 					touch.y=touch.y-(UI.center.y-(UI.displaySize.y/2));
-					UI.onClick(player,touch,20);
+					UI.onClick(player,touch,20,touchInput.isTouchDown());
 				}
-				
+				touchInput.resetNewTouch();
 			}
 
 			// update the last frame time to be the newly drawn one
@@ -106,7 +106,7 @@ public class Game implements Runnable {
 			
 			//tell the renderables to draw it'selves
 			render.draw(actor, player);
-			UI.Update_UI();
+			//UI.Update_UI();
 			render.draw(UI.full_UI,UI);
 			
 			//allow the newly drawn frame to be drawn to the screen

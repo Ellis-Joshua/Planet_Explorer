@@ -41,11 +41,13 @@ public class TouchHandler  implements OnTouchListener{
 					break;
 				case MotionEvent.ACTION_MOVE:
 					touchType = TOUCH_DRAGGED;
+					newTouch=true;
 					break;					
 				case MotionEvent.ACTION_CANCEL:
 				case MotionEvent.ACTION_UP:
 					touchType = TOUCH_UP;
 					isTouched = false;
+					newTouch=true;
 					break;
 			}
 			
