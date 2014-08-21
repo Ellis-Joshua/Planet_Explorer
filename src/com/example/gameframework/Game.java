@@ -18,7 +18,7 @@ public class Game implements Runnable {
 	// input output variables
 	Renderer render;
 	TouchHandler touchInput;
-	Bitmap bitmapLoader;
+	public Bitmap bitmapLoader;
 	
 	
 	volatile boolean running = false;
@@ -26,20 +26,14 @@ public class Game implements Runnable {
 	//Player variables
 	RenderableObject player;
 	Bitmap actor;
-	
+	ClickableUI UI;
 	//Button variables
-	ClickableObject button_up;
-	ClickableObject button_down;
 	
-	Bitmap buttonImage;
-	Bitmap up_image;
-	Bitmap down_image;
-	Bitmap left;
-	Bitmap right;
+
 	
 	
 	public static final Point targetScreenSize = new Point (1000,500);
-		
+
 	public Game (Context context,Point size){
 		
 		
@@ -62,23 +56,12 @@ public class Game implements Runnable {
 		player= new RenderableObject (frameDom,displaySize, startAt, 3,3);// creat the player object
 		player.setPlay(RenderableObject.FORWARD);// set the player to be animated forwards
 		
-		//set up the buttons
-		loadImage("Forward.png",context);//load the players image into memory
-		up_image=bitmapLoader;// save the players image
-		frameDom.set(64, 64);
-		Point buttonSize = new Point(100,100);//set the dominations of the player to be drawn
-		Point buttonAt = new Point(950,450);//set the location the player is to be drawn
-		button_up= new ClickableObject (frameDom,buttonSize, buttonAt, 1,1, ClickableObject.RECTANGLE);// creat the player object
-
-		//set up the buttons
-		loadImage("Backward.png",context);//load the players image into memory
-		down_image=bitmapLoader;// save the players image
-		frameDom.set(64, 64);
-		buttonSize = new Point(100,100);//set the dominations of the player to be drawn
-		buttonAt = new Point(750,450);//set the location the player is to be drawn
-		button_down= new ClickableObject (frameDom,buttonSize, buttonAt, 1,1, ClickableObject.RECTANGLE);// creat the player object
-
+		//setup the UI
 		
+		Point UI_size= new Point(584,584);//(292,292);////()
+		Point UI_at=new Point(340,396);//(340,542);
+		UI=new ClickableUI(UI_size,UI_at, ClickableUI.RECTANGLE);//(Point displaySize, Point drawAt, int shape){
+		UI.setup_ui(this, context);
 	}
 	public Renderer getrenderer(){
 		// get the object responsible for drawing the screen
@@ -91,7 +74,7 @@ public class Game implements Runnable {
 		float nextFrame = lastFrame;
 		
 		//define the amount of movement the player gets from clicking the arrow
-		Point movingSpeed= new Point (0,-20);
+		//Point movingSpeed= new Point (0,-20);
 		
 		//main game loop
 		while (running){
@@ -106,17 +89,14 @@ public class Game implements Runnable {
 			nextFrame = System.nanoTime();
 			player.updateFrame((nextFrame-lastFrame)/1000000000);
 			
-			// "game" mechanics
-			if (touchInput.isNewTouch())
-			{
+			// "game" mechanics/*
+			if (touchInput.isNewTouch()){
 				touchInput.resetNewTouch();
-				if (button_up.isClicked(touchInput.getTouch())){
-					player.move(movingSpeed);//move the player with the button click
-				}else if (button_down.isClicked(touchInput.getTouch())){
-					player.move(0,20);//move the player with the button click){
-						
-				}else{
-					player.moveTo(touchInput.getTouch());//move the player to the touch event
+				Point touch = touchInput.getTouch();
+				if (UI.isClicked(touch)){
+					touch.x=touch.x-(UI.center.x-(UI.displaySize.x));
+					touch.y=touch.y-(UI.center.y-(UI.displaySize.y));
+					UI.onClick(player,touch,20);
 				}
 				
 			}
@@ -126,8 +106,8 @@ public class Game implements Runnable {
 			
 			//tell the renderables to draw it'selves
 			render.draw(actor, player);
-			render.draw(up_image,button_up);
-			render.draw(down_image,button_down);
+			UI.Update_UI();
+			render.draw(UI.full_UI,UI);
 			
 			//allow the newly drawn frame to be drawn to the screen
 			render.unlockFrame();
@@ -152,7 +132,7 @@ public class Game implements Runnable {
 		 gameThread.start();// start that thread
 	 }
 	 
-	private void loadImage(String filename,Context context){
+	public void loadImage(String filename,Context context){
 		bitmapLoader=null;// clear out the bitmapLoader
 		
 		//loading an image stuff
