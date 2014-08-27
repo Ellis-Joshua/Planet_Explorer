@@ -11,10 +11,10 @@ public class TouchHandler  implements OnTouchListener{
 	public static final int TOUCH_DRAGGED = 2;
 	
 	//touch event information
-	boolean isTouched;
-	boolean newTouch;
+	boolean is_touched;
+	boolean new_touch;
 	Point touched;
-	int touchType;
+	int touch_type;
 	
 	//Used move touches from the screens coordinates to the games. 
 	float scaleX;
@@ -26,28 +26,28 @@ public class TouchHandler  implements OnTouchListener{
 		this.scaleX=scaleX;
 		this.scaleY=scaleY;
 		view.setOnTouchListener(this);
-		newTouch=false;
+		new_touch=false;
 	}
 	
 	//when a touch event accrues
 	public boolean onTouch(View v, MotionEvent event) {
 		synchronized(this){
-			isTouched = true;
+			is_touched = true;
 			//figure out what kind of event has happened
 			switch (event.getAction()){
 				case MotionEvent.ACTION_DOWN:
-					touchType = TOUCH_DOWN;
-					newTouch=true;
+					touch_type = TOUCH_DOWN;
+					new_touch=true;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					touchType = TOUCH_DRAGGED;
-					newTouch=true;
+					touch_type = TOUCH_DRAGGED;
+					new_touch=true;
 					break;					
 				case MotionEvent.ACTION_CANCEL:
 				case MotionEvent.ACTION_UP:
-					touchType = TOUCH_UP;
-					isTouched = false;
-					newTouch=true;
+					touch_type = TOUCH_UP;
+					is_touched = false;
+					new_touch=true;
 					break;
 			}
 			
@@ -59,8 +59,8 @@ public class TouchHandler  implements OnTouchListener{
 		}
 	}
 	// is the screen being touched
-	public boolean isTouchDown() {
-		return isTouched;
+	public boolean is_touch_down() {
+		return is_touched;
 	}
 	
 	//where is the screen being touched
@@ -70,11 +70,11 @@ public class TouchHandler  implements OnTouchListener{
 
 	//is this the first time we've seen this finger no the screen since the last time it was removed
 	public boolean isNewTouch(){
-		return newTouch;
+		return new_touch;
 	}
 	
 	//set the currently touching finger to have been seen
 	public void resetNewTouch(){
-		newTouch = false;
+		new_touch = false;
 	}
 }

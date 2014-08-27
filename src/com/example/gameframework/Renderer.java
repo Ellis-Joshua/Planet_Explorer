@@ -36,21 +36,21 @@ public class Renderer extends SurfaceView {
 	}
 	
 	//lock the frame so you can drawn on it
-	public void lockFrame(){
+	public void lock_frame(){
 		canvas =  holder.lockCanvas();
 		canvas.drawRGB(0,0,0);//wipe the screen
 	}
 	
 	//draw to the screen
-	public void draw (Bitmap bitmap, RenderableObject toDraw){
+	public void draw (Bitmap bitmap, Rect draw_from,Rect draw_at){
 		//scale the incoming destination to the screens coordinate system. 
-		dstRect.set((int)(toDraw.getDst().left   / scaleX),
-				    (int)(toDraw.getDst().top    / scaleY),
-				    (int)(toDraw.getDst().right  / scaleX),
-				    (int)(toDraw.getDst().bottom / scaleY));
+		dstRect.set((int)(draw_at.left   / scaleX),
+				    (int)(draw_at.top    / scaleY),
+				    (int)(draw_at.right  / scaleX),
+				    (int)(draw_at.bottom / scaleY));
 		
 		//draw to the canvas
-		canvas.drawBitmap(bitmap, toDraw.getScr(), dstRect, null);//draw the scaled image
+		canvas.drawBitmap(bitmap, draw_from, dstRect,null);//draw the scaled image
 	}
 	
 	//unlock the frame so it can be drawn on the screen

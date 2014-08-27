@@ -12,7 +12,7 @@ import android.view.WindowManager;
 //this is what makes it an android app rather than just a java program
 public class GameMain extends Activity {
 	Game game;
-	@SuppressLint("NewApi")
+	@SuppressLint("NewApi") 
 	@Override
 	public void onCreate (Bundle savedInstanceState){
 		//allways call the super when overriding Activity functions
@@ -29,7 +29,7 @@ public class GameMain extends Activity {
 		game = new Game(this,size);
 		
 		//tell Android what object will be drawing the screen
-		setContentView(game.getrenderer());
+		setContentView(game.get_renderer());
 	}
 	
 	@Override
