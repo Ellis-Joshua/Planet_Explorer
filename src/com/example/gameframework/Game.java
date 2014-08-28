@@ -9,6 +9,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.Rect;
 
 public class Game implements Runnable {
 	
@@ -23,43 +24,34 @@ public class Game implements Runnable {
 	
 	volatile boolean running = false;
 	
-	Renderable_Object player;
 	Movement_UI UI;
-
-	
+	Stage play_area;
 
 	
 	
 	public static final Point target_screen_size = new Point (1000,500);
 
 	public Game (Context context,Point size){
-		
-		Bitmap actor;
-		
+	
 		//Find the amount the locations of things needs to be scaled to fit he screen
 		float scaleX = (float)target_screen_size.x / size.x;
 		float scaleY = (float)target_screen_size.y / size.y;
-		
 		
 		//Initialize input output variables
 		render = new Renderer(context,scaleX,scaleY);
 		touch_input = new TouchHandler(render,scaleX,scaleY);
 		
-		//set up the player 
-		load_image("player.gif",context);//load the players image into memory
-		actor=loaded_bitmap;// save the players image
-		Point frame_size = new Point(32,32);//set the dominations of each animation frame 
-		Point display_size = new Point(64,64);//set the dominations of the player to be drawn
-		Point start_at = new Point(50,50);//set the location the player is to be drawn
-		player= new Renderable_Object (actor,frame_size,display_size, start_at, 3,3);// creat the player object
-		player.set_play(Renderable_Object.FORWARD);// set the player to be animated forwards
-		
-		//setup the UI
-		
-		Point UI_size= new Point(292,292);//(584,584);//////()
-		Point UI_at=new Point(170,250);//(340,542);
+		//setup the HUD
+		Point UI_size= new Point(292,292);
+		Point UI_at=new Point(170,250);
 		UI=new Movement_UI(UI_size,UI_at, Movement_UI.RECTANGLE);//(Point displaySize, Point drawAt, int shape){
 		UI.setup_ui(this, context);
+		
+		//Setup the play area
+		Point start_at = new Point(50,50);//set the location the player is to be drawn
+		Point display_size= new Point(500, 500);
+		play_area=new Stage(display_size,start_at, Stage.RECTANGLE,this,context);
+		
 	}
 	public Renderer get_renderer(){
 		// get the object responsible for drawing the screen
@@ -85,16 +77,13 @@ public class Game implements Runnable {
 			
 			// determain the amount of time that has passes since the last frame was drawn
 			next_frame = System.nanoTime();
-			player.update_frame((next_frame-last_frame)/1000000000);
-			
+			play_area.update_frame((next_frame-last_frame)/1000000000);
 			// "game" mechanics/*
 			if (touch_input.isNewTouch()){
 				Point touch = touch_input.getTouch();
 				UI.reset_button_click_state();
 				if (UI.is_clicked(touch)){
-					touch.x=touch.x-(UI.center.x-(UI.display_size.x/2));
-					touch.y=touch.y-(UI.center.y-(UI.display_size.y/2));
-					UI.on_click(player,touch,20,touch_input.is_touch_down());
+					UI.on_click(play_area,touch,20,touch_input.is_touch_down());
 				}
 				touch_input.resetNewTouch();
 			}
@@ -103,9 +92,8 @@ public class Game implements Runnable {
 			last_frame=next_frame;
 			
 			//tell the renderables to draw themselves
-			player.draw(render);
 			UI.draw(render);
-			
+			play_area.draw(render);
 			//allow the newly drawn frame to be drawn to the screen
 			render.unlockFrame();
 		}

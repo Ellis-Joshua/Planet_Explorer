@@ -72,7 +72,9 @@ public class Movement_UI extends Clickable_Object {
 		button_right.set_frame(0);
 		Update_UI();
 	}
-	public void on_click(Renderable_Object player, Point touch, int speed, boolean touch_down) {
+	public void on_click(Stage player, Point touch, int speed, boolean touch_down) {
+		touch.x=touch.x-(center.x-(display_size.x/2));
+		touch.y=touch.y-(center.y-(display_size.y/2));
 		if (touch_down){
 			if (button_up.is_clicked(touch)){
 				button_up.set_frame(1);
@@ -90,13 +92,13 @@ public class Movement_UI extends Clickable_Object {
 		}else{
 
 			if (button_up.is_clicked(touch)){
-				player.move(0,-speed);
+				player.move_player(0,-speed);
 			}else if (button_down.is_clicked(touch)){
-				player.move(0,speed);
+				player.move_player(0,speed);
 			}else if (button_left.is_clicked(touch)){
-				player.move(-speed,0);
+				player.move_player(-speed,0);
 			}else if (button_right.is_clicked(touch)){
-				player.move(speed,0);
+				player.move_player(speed,0);
 			}
 		}
 		
