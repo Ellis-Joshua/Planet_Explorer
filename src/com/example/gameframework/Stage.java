@@ -16,7 +16,7 @@ public class Stage extends Clickable_Object{
 	Bitmap rocky_ground;
 	int [][]grid;
 	Renderable_Object player;
-	
+	int screen_buffer = 64;
 	
 	public Stage(Point display_size, Point draw_at, int shape,Game game,Context context){
 		super(display_size, display_size, draw_at, 1, 1, shape);
@@ -28,7 +28,7 @@ public class Stage extends Clickable_Object{
 		game.load_image("player.gif",context);//load the players image into memory
 		Point frame_size = new Point(32,32);//set the dominations of each animation frame 
 		display_size.set(64,64);//set the dominations of the player to be drawn
-		Point start_at = new Point(96,96);//set the location the player is to be drawn
+		Point start_at = new Point(160,160);//set the location the player is to be drawn
 		
 		player= new Renderable_Object (game.loaded_bitmap,frame_size,display_size, start_at, 3,3);// creat the player object
 		player.set_play(Renderable_Object.FORWARD);// set the player to be animated forwards
@@ -56,11 +56,57 @@ public class Stage extends Clickable_Object{
 	}
 	public void move_player(int x,int y){
 		player.move(x,y);
+		//checking if the player is at the end of the displaying screen
+		if (player.get_destination().right+screen_buffer >=source_location.right){
+			move_sourec_location(player.get_destination().right+screen_buffer-source_location.right,0);
+		}
+		if (player.get_destination().bottom+screen_buffer>=source_location.bottom){
+			move_sourec_location(0,player.get_destination().bottom+screen_buffer-source_location.bottom);
+		}
+		
+		if (player.get_destination().left-screen_buffer<=source_location.left){
+			move_sourec_location(player.get_destination().left-screen_buffer-source_location.left,0);
+		}
+		if (player.get_destination().top-screen_buffer<=source_location.top){
+			move_sourec_location(0,player.get_destination().top-screen_buffer-source_location.top);
+		}
+		boolean reset_screen=false;
+		
+		//checking if the screen is on off the stage
+		if (source_location.top<0){
+			move_sourec_location(0,screen_buffer);	
+			player.move(0,screen_buffer);	
+			reset_screen=true;
+		}
+		if (source_location.left<0){
+			player.move(screen_buffer,0);
+			move_sourec_location(screen_buffer,0);	
+			reset_screen=true;
+			
+		}
+		if (source_location.bottom+screen_buffer>ground.getHeight()){
+			move_sourec_location(0,-screen_buffer);	
+			player.move(0,-screen_buffer);	
+			reset_screen=true;
+		}
+		if (source_location.right+screen_buffer>ground.getWidth()){
+			move_sourec_location(-screen_buffer,0);			
+			player.move(-screen_buffer,0);	
+			reset_screen=true;
+		}
+		
+		//check if we need to reload the surrounding area
+		if (reset_screen){
+			build_ground();
+			
+			
+		}
+		update_frame(0);
 	}
 	
 	public void update_frame(float delta_time){
 		draw_UI.drawARGB(0, 0, 0, 0);
-		Rect draw_from=new Rect(0, 0, 576, 576);
+		Rect draw_from=new Rect(0, 0, 585, 585);
 		draw_UI.drawBitmap(ground, draw_from, draw_from,null);
 		player.update_frame(delta_time);
 		player.draw(draw_UI);
@@ -72,7 +118,6 @@ public class Stage extends Clickable_Object{
 		Rect draw_from=new Rect(0, 0, 64, 64);
 		for (int y=0;y<=8;y++){
 			for (int x=0;x<=8;x++){		
-				
 				plot.set(x*64, y*64, (x*64)+64, (y*64)+64);
 				//plot.set(0, 0, 576,576);
 				switch(grid[x][y]){

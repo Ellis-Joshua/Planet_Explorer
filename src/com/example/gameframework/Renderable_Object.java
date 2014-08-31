@@ -108,6 +108,9 @@ public Renderable_Object(Point frame_size,Point display_size, Point draw_at, int
 	public Rect get_source_location(){
 		return source_location;
 	}
+	public void move_sourec_location(int x, int y){
+		source_location.set(source_location.left+x, source_location.top+y, source_location.right+x, source_location.bottom+y);
+	}
 	
 	//get the location on the screen to display
 	public Rect get_destination(){
