@@ -19,11 +19,10 @@ public class Stage extends Clickable_Object{
 	int screen_buffer = 64;
 	
 	public Stage(Point display_size, Point draw_at, int shape,Game game,Context context){
-		super(display_size, display_size, draw_at, 1, 1, shape);
+		super(display_size, new Point(800,800), draw_at, 1, 1, shape);
 		
 		this.destination.set(340, 0, 840, 500);
 		this.source_location.set(64, 64, 512, 512);
-		
 		//set up the player 
 		game.load_image("player.gif",context);//load the players image into memory
 		Point frame_size = new Point(32,32);//set the dominations of each animation frame 
@@ -45,10 +44,11 @@ public class Stage extends Clickable_Object{
 				grid[x][y]=0;
 			}
 		}
-		
+		image=Bitmap.createBitmap(575, 575, Config.ARGB_8888);
 		draw_UI=new Canvas();
 		draw_UI.setBitmap(image);
-		ground=Bitmap.createBitmap(576, 576, Config.ARGB_8888);
+		
+		ground=Bitmap.createBitmap(image.getWidth(), image.getHeight(), Config.ARGB_8888);
 		draw_background=new Canvas();
 		draw_background.setBitmap(ground);
 		build_ground();
@@ -106,7 +106,7 @@ public class Stage extends Clickable_Object{
 	
 	public void update_frame(float delta_time){
 		draw_UI.drawARGB(0, 0, 0, 0);
-		Rect draw_from=new Rect(0, 0, 585, 585);
+		Rect draw_from=new Rect(0, 0,ground.getWidth(), ground.getHeight());
 		draw_UI.drawBitmap(ground, draw_from, draw_from,null);
 		player.update_frame(delta_time);
 		player.draw(draw_UI);
@@ -115,11 +115,10 @@ public class Stage extends Clickable_Object{
 	public void build_ground(){
 		draw_background.drawARGB(0, 0, 0, 0);
 		Rect plot = new Rect();
-		Rect draw_from=new Rect(0, 0, 64, 64);
+		Rect draw_from=new Rect(0, 0, 63, 63);
 		for (int y=0;y<=8;y++){
 			for (int x=0;x<=8;x++){		
 				plot.set(x*64, y*64, (x*64)+64, (y*64)+64);
-				//plot.set(0, 0, 576,576);
 				switch(grid[x][y]){
 					case 0:
 						draw_background.drawBitmap(rocky_ground, draw_from, plot, null);
