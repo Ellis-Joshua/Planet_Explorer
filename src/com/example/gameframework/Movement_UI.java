@@ -92,13 +92,13 @@ public class Movement_UI extends Clickable_Object {
 		}else{
 
 			if (button_up.is_clicked(touch)){
-				player.move_player(0,-speed);
+				player.set_target_player_destination(0,-speed);
 			}else if (button_down.is_clicked(touch)){
-				player.move_player(0,speed);
+				player.set_target_player_destination(0,speed);
 			}else if (button_left.is_clicked(touch)){
-				player.move_player(-speed,0);
+				player.set_target_player_destination(-speed,0);
 			}else if (button_right.is_clicked(touch)){
-				player.move_player(speed,0);
+				player.set_target_player_destination(speed,0);
 			}
 		}
 		

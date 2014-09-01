@@ -20,7 +20,7 @@ public class Renderable_Object {
 	float frames_per_second	= 0;
 	
 	//center and dominations of the image
-	Point center        	= new Point();
+	public Point center        	= new Point();
 	Point display_size    	= new Point();
 	Point source_size    	= new Point();
 	Rect  destination    	= new Rect();
@@ -50,7 +50,7 @@ public class Renderable_Object {
 		move_to(draw_at);
 		update_frame();
 	}
-public Renderable_Object(Point frame_size,Point display_size, Point draw_at, int frames,int frames_per_second){
+	public Renderable_Object(Point frame_size,Point display_size, Point draw_at, int frames,int frames_per_second){
 		
 		//set up images sizes for bother the source and destination
 		image=Bitmap.createBitmap(display_size.x, display_size.y, Config.ARGB_8888);
@@ -122,7 +122,10 @@ public Renderable_Object(Point frame_size,Point display_size, Point draw_at, int
 		this.center.set( center.x, center.y);
 		destination.set(center.x - display_size.x/2, center.y - display_size.y/2, center.x+ display_size.x/2, center.y +display_size.y/2);
 	}
-	
+	public void move_to(int x,int y){
+		this.center.set( x, y);
+		destination.set(x - display_size.x/2, y - display_size.y/2, x+ display_size.x/2, y +display_size.y/2);
+	}
 	//move the location that the image is being drawn
 	public void set_size(int left, int top, int right ,int bottom){
 		//redefine the draw location
@@ -154,9 +157,9 @@ public Renderable_Object(Point frame_size,Point display_size, Point draw_at, int
 		
 		destination.set(center.x - display_size.x/2, center.y - display_size.y/2, center.x+ display_size.x/2, center.y +display_size.y/2);
 	}
-	public void move(int mx, int my){
-		center.x += mx;
-		center.y += my;
+	public void move(int x, int y){
+		center.x += x;
+		center.y += y;
 		
 		destination.set(center.x - display_size.x/2, center.y - display_size.y/2, center.x+ display_size.x/2, center.y +display_size.y/2);
 	}

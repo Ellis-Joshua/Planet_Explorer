@@ -82,7 +82,7 @@ public class Game implements Runnable {
 				Point touch = touch_input.getTouch();
 				UI.reset_button_click_state();
 				if (UI.is_clicked(touch)){
-					UI.on_click(play_area,touch,20,touch_input.is_touch_down());
+					UI.on_click(play_area,touch,64,touch_input.is_touch_down());
 				}
 				touch_input.resetNewTouch();
 			}
